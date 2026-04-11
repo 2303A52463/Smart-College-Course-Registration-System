@@ -1,5 +1,9 @@
 # Smart College Course Registration System
 
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Render-blue?style=for-the-badge)](https://smart-college-course-registration-system.onrender.com)
+
+**[📱 Open Live Application](https://smart-college-course-registration-system.onrender.com)**
+
 A modular Python project for managing students, courses, registrations, waiting lists, and analytics with a web interface and an optional terminal UI.
 
 ## Features
@@ -34,12 +38,15 @@ Then open `http://127.0.0.1:5000` in your browser.
 
 ## Live Deployment
 
-🚀 **Access the live application here:**
-- **URL:** https://smart-college-course-registration-system.onrender.com
-- **Platform:** Render (Free Tier)
-- **Status:** Active
+🌐 **Live Application:** https://smart-college-course-registration-system.onrender.com
 
-### Run Terminal App
+- **Platform:** Render (Free Tier)
+- **Status:** ✅ Active and Running
+- **Default Login:**
+  - Username: `admin`
+  - Password: `admin123`
+
+---
 
 ```bash
 pip install -r backend/requirements.txt

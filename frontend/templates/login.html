@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="auth-wrap reveal">
+  <div class="auth-card login-card">
+    <span class="eyebrow">{{ login_role_title }} Access</span>
+    <h1>{{ login_role_title }} login</h1>
+    <p class="sub">
+      {% if login_role == 'admin' %}
+      Sign in with an administrator account to manage courses, students, and analytics.
+      {% else %}
+      Sign in with a student account to view your profile and enroll in courses.
+      {% endif %}
+    </p>
+
+    <form method="post" class="form-grid">
+      <label for="username">
+        {% if login_role == 'student' %}
+        Username, student ID, email, or student name
+        {% else %}
+        Username
+        {% endif %}
+      </label>
+      <input
+        id="username"
+        name="username"
+        type="text"
+        placeholder="{% if login_role == 'student' %}student1, 2303A52061, or MUKESH BABU{% else %}admin{% endif %}"
+        required
+      >
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" placeholder="Enter password" required>
+
+      <button class="btn btn-primary" type="submit">Login</button>
+    </form>
+
+    <div class="demo-note auth-links login-switches">
+      {% if login_role == 'admin' %}
+      <span>Student account?</span>
+      <a href="{{ url_for('student_login') }}">Open student login</a>
+      {% else %}
+      <span>Administrator?</span>
+      <a href="{{ url_for('admin_login') }}">Open admin login</a>
+      {% endif %}
+    </div>
+
+    {% if login_role == 'admin' %}
+    <div class="demo-note login-note">
+      Demo login: <strong>admin</strong> / <strong>admin123</strong>
+    </div>
+    {% else %}
+    <div class="demo-note login-note">
+      Student access: use your student ID as username (or login with name/email), password <strong>student123</strong>.
+    </div>
+    {% endif %}
+
+    <div class="demo-note auth-links">
+      {% if login_role == 'student' %}
+      <a href="{{ url_for('signup') }}">Create student account</a>
+      <span>|</span>
+      {% endif %}
+      <a href="{{ url_for('reset_password') }}">Reset password</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

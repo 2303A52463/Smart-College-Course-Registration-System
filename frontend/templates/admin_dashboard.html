@@ -1,0 +1,329 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="grid-cards reveal">
+  <article class="metric">
+    <h3>Total Courses</h3>
+    <p>{{ report.total_courses }}</p>
+  </article>
+  <article class="metric">
+    <h3>Total Students</h3>
+    <p>{{ report.total_students }}</p>
+  </article>
+  <article class="metric">
+    <h3>Most Popular</h3>
+    <p>{{ report.most_popular_course }}</p>
+  </article>
+  <article class="metric">
+    <h3>Avg Enrollment</h3>
+    <p>{{ report.average_enrollment_per_course }}</p>
+  </article>
+</section>
+
+<section class="panel reveal stagger-1">
+  <h2>Enrollment Analytics</h2>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>Enrollment Trend (by Date)</h3>
+      <canvas id="trendChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Course Demand vs Waiting</h3>
+      <canvas id="courseChart"></canvas>
+    </div>
+  </div>
+</section>
+
+<section class="panel reveal stagger-1">
+  <h2>Quick Actions</h2>
+  <div class="quick-grid">
+    <form method="post" action="{{ url_for('add_course') }}" class="card-form">
+      <h3>Add Course</h3>
+      <input name="course_id" placeholder="Course ID" required>
+      <input name="course_name" placeholder="Course Name" required>
+      <input name="instructor_name" placeholder="Instructor Name" required>
+      <input name="branch" placeholder="Branch" required>
+      <select name="category">
+        <option>Core</option>
+        <option>Elective</option>
+      </select>
+      <input name="max_seats" type="number" min="1" max="3" placeholder="Max Seats (1-3)" required>
+      <input name="credits" type="number" min="1" placeholder="Credits" required>
+      <button class="btn btn-primary" type="submit">Add Course</button>
+    </form>
+
+    <form method="post" action="{{ url_for('add_student') }}" class="card-form form-stack compact-stack">
+      <h3>Register Student</h3>
+      <p class="hint">Create the student profile first. Enrollment can be done separately after courses are available.</p>
+      <div class="field-group">
+        <label for="admin_student_id">Student ID</label>
+        <input id="admin_student_id" name="student_id" placeholder="Student ID" required>
+      </div>
+      <div class="field-group">
+        <label for="admin_student_name">Student Name</label>
+        <input id="admin_student_name" name="student_name" placeholder="Student Name" required>
+      </div>
+      <div class="field-group">
+        <label for="admin_branch">Branch</label>
+        <input id="admin_branch" name="branch" placeholder="Branch" required>
+      </div>
+      <div class="field-group">
+        <label for="admin_semester">Semester</label>
+        <input id="admin_semester" name="semester" type="number" min="1" max="12" placeholder="Semester" required>
+      </div>
+      <div class="field-group">
+        <label for="admin_email">Email</label>
+        <input id="admin_email" name="email" type="email" placeholder="Email" required>
+      </div>
+      <button class="btn btn-primary form-submit" type="submit">Register Student</button>
+    </form>
+
+    <form method="post" action="{{ url_for('enroll') }}" class="card-form">
+      <h3>Enroll Student</h3>
+      <input name="student_id" placeholder="Student ID" required>
+      <input name="course_id" placeholder="Course ID" required>
+      <button class="btn btn-primary" type="submit">Enroll</button>
+      <p class="hint">Smart checks capacity automatically and rejects when full.</p>
+    </form>
+  </div>
+</section>
+
+<section class="panel reveal stagger-2">
+  <h2>Search and Filter</h2>
+  <form method="get" action="{{ url_for('admin_dashboard') }}" class="filter-row">
+    <input name="search" placeholder="Search by ID or Name" value="{{ search_query }}">
+    <input name="branch" placeholder="Branch" value="{{ branch }}">
+    <input name="instructor" placeholder="Instructor" value="{{ instructor }}">
+    <select name="category">
+      <option value="">Category (Any)</option>
+      <option value="Core" {% if category == 'Core' %}selected{% endif %}>Core</option>
+      <option value="Elective" {% if category == 'Elective' %}selected{% endif %}>Elective</option>
+    </select>
+    <button class="btn btn-ghost" type="submit">Apply</button>
+    <a class="btn btn-ghost" href="{{ url_for('admin_dashboard') }}">Reset</a>
+  </form>
+</section>
+
+<section class="panel reveal stagger-3">
+  <h2>Course Catalog</h2>
+  <p class="hint">Seats shown as Enrolled/Total (example: 3/5 means 3 students registered out of 5 seats).</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Student ID</th>
+          <th>Student Name</th>
+          <th>Course Name</th>
+          <th>Course ID</th>
+          <th>Instructor</th>
+          <th>Branch</th>
+          <th>Category</th>
+          <th>Credits</th>
+          <th>Seats Available</th>
+          <th>Status</th>
+          <th>Actions</th>
+          <th>Report Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in courses %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>
+            {% if c.enrolled_students %}
+              {{ c.enrolled_students | join(', ') }}
+            {% else %}
+              Not enrolled
+            {% endif %}
+          </td>
+          <td>
+            {% if c.enrolled_students %}
+              {% for student_id in c.enrolled_students %}
+                {{ student_name_by_id.get(student_id, student_id) }}{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            {% else %}
+              Not enrolled
+            {% endif %}
+          </td>
+          <td>{{ c.course_name }}</td>
+          <td>{{ c.course_id }}</td>
+          <td>{{ c.instructor_name }}</td>
+          <td>{{ c.branch }}</td>
+          <td>{{ c.category }}</td>
+          <td>{{ c.credits }}</td>
+          <td>{{ c.enrolled_students | length }}/{{ c.max_seats }}</td>
+          <td>
+            {% if c.enrolled_students | length >= c.max_seats %}
+              ❌ Course Full
+            {% else %}
+              ✅ Seats Available
+            {% endif %}
+          </td>
+          <td>
+            <details>
+              <summary>Edit</summary>
+              <form method="post" action="{{ url_for('update_course', course_id=c.course_id) }}" class="inline-edit">
+                <input value="{{ student_name_by_id.get(c.enrolled_students[0], 'Not enrolled') if c.enrolled_students else 'Not enrolled' }}" placeholder="Student Name" readonly>
+                <input value="{{ c.enrolled_students[0] if c.enrolled_students else 'Not enrolled' }}" placeholder="Student ID" readonly>
+                <input value="{{ c.course_id }}" placeholder="Course ID" readonly>
+                <input name="course_name" placeholder="Course Name">
+                <input name="instructor_name" placeholder="New Instructor">
+                <input name="branch" placeholder="Branch">
+                <select name="category">
+                  <option value="">Category</option>
+                  <option>Core</option>
+                  <option>Elective</option>
+                </select>
+                <input name="max_seats" type="number" min="1" max="3" placeholder="Max Seats (1-3)">
+                <input name="credits" type="number" min="1" placeholder="Credits">
+                <button class="btn btn-primary" type="submit">Update</button>
+              </form>
+              <form method="post" action="{{ url_for('delete_course', course_id=c.course_id) }}">
+                <button class="btn btn-danger" type="submit">Delete</button>
+              </form>
+            </details>
+          </td>
+          <td>
+            <details>
+              <summary>View Report</summary>
+              <p><strong>Course:</strong> {{ c.course_name }} ({{ c.course_id }})</p>
+              <p><strong>Instructor:</strong> {{ c.instructor_name }}</p>
+              <p><strong>Category:</strong> {{ c.category }} | <strong>Branch:</strong> {{ c.branch }}</p>
+              <p><strong>Credits:</strong> {{ c.credits }}</p>
+              <p><strong>Enrollment:</strong> {{ c.enrolled_students | length }}/{{ c.max_seats }}</p>
+              <p><strong>Available Seats:</strong> {{ c.available_seats }}</p>
+              <p><strong>Waiting List Count:</strong> {{ c.waiting_list | length }}</p>
+              <p>
+                <a class="btn btn-ghost" href="{{ url_for('download_course_report', course_id=c.course_id) }}">Download Report (PDF)</a>
+              </p>
+
+              <p><strong>Students in this course:</strong></p>
+              {% if c.enrolled_students %}
+                <div class="table-wrap">
+                  <table class="report-mini-table">
+                    <thead>
+                      <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Branch</th>
+                        <th>Semester</th>
+                        <th>Email</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for student_id in c.enrolled_students %}
+                        {% set enrolled_student = student_by_id.get(student_id) %}
+                        <tr>
+                          <td>{{ student_id }}</td>
+                          <td>{{ enrolled_student.student_name if enrolled_student else student_name_by_id.get(student_id, 'N/A') }}</td>
+                          <td>{{ enrolled_student.branch if enrolled_student else 'N/A' }}</td>
+                          <td>{{ enrolled_student.semester if enrolled_student else 'N/A' }}</td>
+                          <td>{{ enrolled_student.email if enrolled_student else 'N/A' }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              {% else %}
+                <p>No students enrolled yet.</p>
+              {% endif %}
+            </details>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel reveal stagger-4">
+  <h2>Student Directory</h2>
+  <div class="student-grid">
+    {% for s in students %}
+      <a class="student-card" href="{{ url_for('student_profile', student_id=s.student_id) }}">
+        <h3>{{ s.student_name }}</h3>
+        <p><strong>ID:</strong> {{ s.student_id }}</p>
+        <p><strong>Branch:</strong> {{ s.branch }}</p>
+        <p><strong>Semester:</strong> {{ s.semester }}</p>
+        <p><strong>Email:</strong> {{ s.email }}</p>
+        <p><strong>Registered Courses:</strong> {{ s.registered_courses | length }}</p>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel reveal stagger-5">
+  <h2>Report Highlights</h2>
+  <p>Courses with available seats: {{ report.courses_with_available_seats | join(', ') if report.courses_with_available_seats else 'None' }}</p>
+  <p>Courses with waiting list: {{ report.courses_with_waiting_list | join(', ') if report.courses_with_waiting_list else 'None' }}</p>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script id="trend-data" type="application/json">{{ {"labels": trend_labels, "values": trend_values} | tojson }}</script>
+<script id="course-data" type="application/json">{{ {"labels": course_labels, "enrolled": course_enrollment, "waiting": waiting_counts} | tojson }}</script>
+<script>
+  const trendPayload = JSON.parse(document.getElementById('trend-data').textContent);
+  const coursePayload = JSON.parse(document.getElementById('course-data').textContent);
+  const trendCtx = document.getElementById('trendChart');
+  const courseCtx = document.getElementById('courseChart');
+
+  if (trendCtx) {
+    new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: trendPayload.labels,
+        datasets: [{
+          label: 'Successful Enrollments',
+          data: trendPayload.values,
+          borderColor: '#00e5c0',
+          backgroundColor: 'rgba(0, 229, 192, 0.15)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#e8fbff' } } },
+        scales: {
+          x: { ticks: { color: '#b8f2fb' }, grid: { color: 'rgba(255,255,255,0.08)' } },
+          y: { ticks: { color: '#b8f2fb' }, grid: { color: 'rgba(255,255,255,0.08)' } }
+        }
+      }
+    });
+  }
+
+  if (courseCtx) {
+    new Chart(courseCtx, {
+      type: 'bar',
+      data: {
+        labels: coursePayload.labels,
+        datasets: [
+          {
+            label: 'Enrolled',
+            data: coursePayload.enrolled,
+            backgroundColor: 'rgba(0, 229, 192, 0.65)'
+          },
+          {
+            label: 'Waiting',
+            data: coursePayload.waiting,
+            backgroundColor: 'rgba(255, 180, 84, 0.65)'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#e8fbff' } } },
+        scales: {
+          x: { ticks: { color: '#b8f2fb' }, grid: { color: 'rgba(255,255,255,0.08)' } },
+          y: { ticks: { color: '#b8f2fb' }, grid: { color: 'rgba(255,255,255,0.08)' } }
+        }
+      }
+    });
+  }
+</script>
+{% endblock %}

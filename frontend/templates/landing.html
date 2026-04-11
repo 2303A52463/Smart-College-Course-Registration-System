@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero reveal">
+  <div class="hero-copy">
+    <span class="eyebrow">SRU COURSE REGISTRATION</span>
+    <h1>Course registration that feels clear, fast, and reliable.</h1>
+    <p class="hero-text">
+      Manage academic registration with role-based dashboards, secure student accounts,
+      live seat tracking, and enrollment reporting in one system.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ url_for('admin_login') }}">Admin Login</a>
+      <a class="btn btn-ghost" href="{{ url_for('student_login') }}">Student Login</a>
+      <a class="btn btn-ghost" href="{{ url_for('signup') }}">Create Student Account</a>
+    </div>
+    <div class="hero-points">
+      <span class="chip">Seat limit controls</span>
+      <span class="chip">Student self-signup</span>
+      <span class="chip">Admin analytics</span>
+    </div>
+  </div>
+
+  <div class="hero-panel">
+    <div class="hero-card spotlight-card">
+      <p class="spotlight-label">Platform Snapshot</p>
+      <div class="spotlight-grid">
+        <article>
+          <span>Total Courses</span>
+          <strong>{{ report.total_courses }}</strong>
+        </article>
+        <article>
+          <span>Total Students</span>
+          <strong>{{ report.total_students }}</strong>
+        </article>
+        <article>
+          <span>Most Popular</span>
+          <strong>{{ report.most_popular_course }}</strong>
+        </article>
+        <article>
+          <span>Average Enrollment</span>
+          <strong>{{ report.average_enrollment_per_course }}</strong>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel reveal stagger-1 landing-section">
+  <div class="section-heading">
+    <span class="eyebrow">Why this portal</span>
+    <h2>Built for academic workflows, not generic forms.</h2>
+  </div>
+  <div class="feature-grid">
+    <article class="feature-card">
+      <h3>Controlled Enrollment</h3>
+      <p>Prevent overbooking with seat caps, duplicate checks, and single-course registration rules.</p>
+    </article>
+    <article class="feature-card">
+      <h3>Student Self-Service</h3>
+      <p>Students can create accounts, manage login credentials, and enroll through a dedicated dashboard.</p>
+    </article>
+    <article class="feature-card">
+      <h3>Admin Visibility</h3>
+      <p>Track enrollment trends, course demand, and student records from one professional dashboard.</p>
+    </article>
+  </div>
+</section>
+
+<section class="panel reveal stagger-2 landing-section">
+  <div class="section-heading">
+    <span class="eyebrow">Featured Courses</span>
+    <h2>Current catalog preview</h2>
+  </div>
+  <div class="feature-grid">
+    {% for course in featured_courses %}
+      <article class="feature-card feature-course">
+        <p class="course-kicker">{{ course.category }} · {{ course.branch }}</p>
+        <h3>{{ course.course_name }}</h3>
+        <p>{{ course.course_id }} with {{ course.instructor_name }}</p>
+        <div class="course-meta">
+          <span class="chip">{{ course.credits }} Credits</span>
+          <span class="chip">{{ course.available_seats }}/{{ course.max_seats }} Seats</span>
+        </div>
+      </article>
+    {% else %}
+      <article class="feature-card">
+        <h3>Catalog Loading Soon</h3>
+        <p>Add courses from the admin dashboard to display featured offerings here.</p>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel reveal stagger-3 landing-section cta-band">
+  <div>
+    <span class="eyebrow">Get Started</span>
+    <h2>Choose the correct login for your role.</h2>
+    <p class="sub">Use the admin account for course management, or create a student account to register and enroll.</p>
+  </div>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{{ url_for('admin_login') }}">Admin Login</a>
+    <a class="btn btn-ghost" href="{{ url_for('student_login') }}">Student Login</a>
+    <a class="btn btn-ghost" href="{{ url_for('reset_password') }}">Reset Password</a>
+  </div>
+</section>
+{% endblock %}

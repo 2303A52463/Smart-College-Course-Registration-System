@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="auth-wrap reveal">
+  <div class="auth-card auth-wide">
+    <h1>Create Student Account</h1>
+    <p class="sub">Signup with secure password hashing and linked student profile.</p>
+
+    <form method="post" class="form-stack">
+      <div class="field-group">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" placeholder="Enter username" required>
+      </div>
+
+      <div class="field-group">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="Enter email address" required>
+      </div>
+
+      <div class="field-group">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Create password" required>
+      </div>
+
+      <div class="field-group">
+        <label for="confirm_password">Confirm Password</label>
+        <input id="confirm_password" name="confirm_password" type="password" placeholder="Re-enter password" required>
+      </div>
+
+      <div class="field-group">
+        <label for="student_id">Student ID</label>
+        <input id="student_id" name="student_id" type="text" placeholder="Enter student ID" required>
+      </div>
+
+      <div class="field-group">
+        <label for="student_name">Student Name</label>
+        <input id="student_name" name="student_name" type="text" placeholder="Enter full name" required>
+      </div>
+
+      <div class="field-group">
+        <label for="branch">Branch</label>
+        <input id="branch" name="branch" type="text" placeholder="Enter branch" required>
+      </div>
+
+      <div class="field-group">
+        <label for="semester">Semester</label>
+        <input id="semester" name="semester" type="number" min="1" max="12" placeholder="Enter semester" required>
+      </div>
+
+      <button class="btn btn-primary form-submit" type="submit">Create Account</button>
+    </form>
+
+    <div class="demo-note">
+      Already have an account? <a href="{{ url_for('student_login') }}">Student Login</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

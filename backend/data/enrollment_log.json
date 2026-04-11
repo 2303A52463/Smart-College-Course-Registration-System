@@ -1,0 +1,20 @@
+[
+  {
+    "date": "2026-03-17",
+    "student_id": "2303A52061",
+    "course_id": "CS100",
+    "status": "enrolled"
+  },
+  {
+    "date": "2026-03-17",
+    "student_id": "2303A52062",
+    "course_id": "CS103",
+    "status": "enrolled"
+  },
+  {
+    "date": "2026-03-17",
+    "student_id": "2303A51119",
+    "course_id": "CS104",
+    "status": "enrolled"
+  }
+]

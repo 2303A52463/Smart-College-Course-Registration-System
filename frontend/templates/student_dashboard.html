@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="grid-cards reveal">
+  <article class="metric">
+    <h3>Student</h3>
+    <p>{{ student.student_name }}</p>
+  </article>
+  <article class="metric">
+    <h3>Student ID</h3>
+    <p>{{ student.student_id }}</p>
+  </article>
+  <article class="metric">
+    <h3>Branch</h3>
+    <p>{{ student.branch }}</p>
+  </article>
+  <article class="metric">
+    <h3>Semester</h3>
+    <p>{{ student.semester }}</p>
+  </article>
+</section>
+
+<section class="panel reveal stagger-1">
+  <h2>Enroll in Course</h2>
+  <form method="post" action="{{ url_for('enroll') }}" class="filter-row student-enroll-row">
+    <select name="course_id" required>
+      <option value="">Choose Course</option>
+      {% for c in courses if c.available_seats > 0 %}
+      <option value="{{ c.course_id }}">{{ c.course_id }} - {{ c.course_name }} ({{ c.enrolled_students | length }}/{{ c.max_seats }} filled)</option>
+      {% endfor %}
+    </select>
+    <button class="btn btn-primary" type="submit">Enroll Now</button>
+  </form>
+  <p class="hint">Rules: max 3 seats per course, no enrollment after full, and one course per student.</p>
+</section>
+
+<section class="panel reveal stagger-2">
+  <h2>My Registered Courses</h2>
+  <div class="student-grid">
+    {% for c in report.registered_courses %}
+      <article class="student-card">
+        <h3>{{ c.course_name }}</h3>
+        <p>ID: {{ c.course_id }}</p>
+        <p>Instructor: {{ c.instructor_name }}</p>
+        <p>Credits: {{ c.credits }}</p>
+      </article>
+    {% else %}
+      <p>No enrolled courses yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel reveal stagger-3">
+  <h2>Student Course Registration Report</h2>
+  <div class="grid-cards">
+    <article class="metric">
+      <h3>Total Registered</h3>
+      <p>{{ report.total_registered_courses }}</p>
+    </article>
+    <article class="metric">
+      <h3>Total Credits</h3>
+      <p>{{ report.total_credits }}</p>
+    </article>
+    <article class="metric">
+      <h3>Last Enrollment Date</h3>
+      <p>{{ report.last_enrollment_date }}</p>
+    </article>
+  </div>
+  <p class="hint">Download your full course registration report in CSV format for records.</p>
+  <a class="btn btn-ghost" href="{{ url_for('download_student_report') }}">Download Report (PDF)</a>
+</section>
+
+<section class="panel reveal stagger-4">
+  <h2>Available Courses</h2>
+  <p class="hint">Seats shown as Enrolled/Total (example: 3/3 means all seats filled). Status: ✅ = Seats Available | ❌ = Course Full</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Instructor</th>
+          <th>Category</th>
+          <th>Branch</th>
+          <th>Seats Available</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in courses %}
+        <tr>
+          <td>{{ c.course_id }}</td>
+          <td>{{ c.course_name }}</td>
+          <td>{{ c.instructor_name }}</td>
+          <td>{{ c.category }}</td>
+          <td>{{ c.branch }}</td>
+          <td>{{ c.enrolled_students | length }}/{{ c.max_seats }}</td>
+          <td>
+            {% if c.enrolled_students | length >= c.max_seats %}
+              ❌ Course Full
+            {% else %}
+              ✅ Seats Available
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

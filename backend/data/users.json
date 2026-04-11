@@ -1,0 +1,71 @@
+[
+  {
+    "username": "admin",
+    "role": "admin",
+    "email": "admin@college.edu",
+    "password_hash": "scrypt:32768:8:1$bonJXrWn70zWRnur$f6f93a8ff36facab14f535adef720e80f3f46a0d3eaa4b833839df10cf307cb251d5e3af1ef88ea8be4614fa0fe08dd4f641dad7dc9b5ded24e291b33e189ecf"
+  },
+  {
+    "username": "student1",
+    "password_hash": "scrypt:32768:8:1$oS0uLWO9nc24eCSQ$74180fb5165862d6fa2209d038b9a48b4d56607db331cfcbf7ce5921daf000197cc9921cfb3beb03a13af7be2369078e7effabbc80511a12fbbf0a9fdb775c95",
+    "role": "student",
+    "email": "2303a52061@sru.edu.in",
+    "student_id": "2303A52061"
+  },
+  {
+    "username": "2303a51119",
+    "password_hash": "scrypt:32768:8:1$gOQWdFzajZKLYKOT$2c20f42925b8f09126f9ddca0857eb76fa8973b071c8d68ade6ff66afb2694fe69e6a8701027782e865fc928025aff16b8de1d3762e7e0ef93a1e1a7c3ac5e35",
+    "role": "student",
+    "email": "2303A51119@sru.edu.in",
+    "student_id": "2303A51119"
+  },
+  {
+    "username": "2303a52055",
+    "password_hash": "scrypt:32768:8:1$oS0uLWO9nc24eCSQ$74180fb5165862d6fa2209d038b9a48b4d56607db331cfcbf7ce5921daf000197cc9921cfb3beb03a13af7be2369078e7effabbc80511a12fbbf0a9fdb775c95",
+    "role": "student",
+    "email": "2303A52055@sru.edu.in",
+    "student_id": "2303A52055"
+  },
+  {
+    "username": "2303a52057",
+    "password_hash": "scrypt:32768:8:1$iaxZeiuiGqwlDdVM$cea3f6484ced054cb881e3b94d9bf2ba6559266ac0429470a2e640caa19d30077a139cfe67683f37d8212f222c923f905b1d16c30b23ff4187b48775e7f08e84",
+    "role": "student",
+    "email": "2303A52057@sru.edu.in",
+    "student_id": "2303A52057"
+  },
+  {
+    "username": "2303a52062",
+    "password_hash": "scrypt:32768:8:1$eXstUubqUti3zPgK$73d93a7ae39c4f3895e442bfa6c3b4591b4e006ae673621b0589bddccf1b8789f1615e654d521179e80b054af28a3d883cc2dd3255420596f7e20318941b21e5",
+    "role": "student",
+    "email": "2303A52062@sru.edu.in",
+    "student_id": "2303A52062"
+  },
+  {
+    "username": "2303a51120",
+    "password_hash": "scrypt:32768:8:1$t3YATrVFwhG2YImX$e31ebc0d3330e07505dcbae1148af8036cd1d675829acfead274352f48d9e00ceece8ec61124c337f598ed6dfd810c8931c36770d63c1f371e6bf265fd1bc910",
+    "role": "student",
+    "email": "2303A51120@sru.edu.in",
+    "student_id": "2303A51120"
+  },
+  {
+    "username": "2303a51121",
+    "password_hash": "scrypt:32768:8:1$0mwMUC4Hq9pLF7OI$9adc79268ef433367d548d13b85437cec955f85eeb98ba942c3a4078a482986e9ba3446ba74c163fdd6149647be150b45b52044ae1dc1ebbd3e74dcedba8dfae",
+    "role": "student",
+    "email": "2303A51121@sru.edu.in",
+    "student_id": "2303A51121"
+  },
+  {
+    "username": "2303a51122",
+    "password_hash": "scrypt:32768:8:1$NwqMLLnHwgrDLWbr$f8710be8dda8217179299143928ea3b554ecb971330650dc7585239df6d5adb57b12501974849734008fe29ce79e57f23e681e7a986351535f20129ea0a8a41c",
+    "role": "student",
+    "email": "2303A51122@sru.edu.in",
+    "student_id": "2303A51122"
+  },
+  {
+    "username": "2303a51123",
+    "password_hash": "scrypt:32768:8:1$SOlGKnXNHaPgMnsQ$cc048f219a061dd09663dc74305034e88bfcbdecac8ee5f4deefc8e49f649b669d280c8e59c61bd5b27fd82c32c26314e4eb8c34c2a2b5110cfb26fb6db75bd8",
+    "role": "student",
+    "email": "2303A51123@sru.edu.in",
+    "student_id": "2303A51123"
+  }
+]

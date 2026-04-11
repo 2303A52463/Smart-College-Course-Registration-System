@@ -1,0 +1,92 @@
+[
+  {
+    "student_id": "2303A52061",
+    "student_name": "Aarav Reddy",
+    "branch": "CSE",
+    "semester": 6,
+    "email": "2303A52061@sru.edu.in",
+    "registered_courses": [
+      "CS100"
+    ]
+  },
+  {
+    "student_id": "2303A52055",
+    "student_name": "Ishita Rao",
+    "branch": "CSE",
+    "semester": 6,
+    "email": "2303A52055@sru.edu.in",
+    "registered_courses": [
+      "CS100"
+    ]
+  },
+  {
+    "student_id": "2303A52057",
+    "student_name": "Vihaan Kumar",
+    "branch": "CSE",
+    "semester": 6,
+    "email": "2303A52057@sru.edu.in",
+    "registered_courses": [
+      "CS100"
+    ]
+  },
+  {
+    "student_id": "2303A52062",
+    "student_name": "Meera Nair",
+    "branch": "CSE",
+    "semester": 6,
+    "email": "2303A52062@sru.edu.in",
+    "registered_courses": [
+      "CS103"
+    ]
+  },
+  {
+    "student_id": "2303A51119",
+    "student_name": "Arjun Malhotra",
+    "branch": "CSE",
+    "semester": 6,
+    "email": "2303A51119@sru.edu.in",
+    "registered_courses": [
+      "CS103"
+    ]
+  },
+  {
+    "student_id": "2303A51120",
+    "student_name": "Priya Singh",
+    "branch": "CSE",
+    "semester": 6,
+    "email": "2303A51120@sru.edu.in",
+    "registered_courses": [
+      "CS103"
+    ]
+  },
+  {
+    "student_id": "2303A51121",
+    "student_name": "Aditya Patel",
+    "branch": "CSE",
+    "semester": 6,
+    "email": "2303A51121@sru.edu.in",
+    "registered_courses": [
+      "CS104"
+    ]
+  },
+  {
+    "student_id": "2303A51122",
+    "student_name": "Neha Gupta",
+    "branch": "CSE",
+    "semester": 6,
+    "email": "2303A51122@sru.edu.in",
+    "registered_courses": [
+      "CS104"
+    ]
+  },
+  {
+    "student_id": "2303A51123",
+    "student_name": "Ravi Joshi",
+    "branch": "CSE",
+    "semester": 6,
+    "email": "2303A51123@sru.edu.in",
+    "registered_courses": [
+      "CS104"
+    ]
+  }
+]

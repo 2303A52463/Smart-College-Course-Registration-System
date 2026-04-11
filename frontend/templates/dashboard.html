@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="grid-cards reveal">
+  <article class="metric">
+    <h3>Total Courses</h3>
+    <p>{{ report.total_courses }}</p>
+  </article>
+  <article class="metric">
+    <h3>Total Students</h3>
+    <p>{{ report.total_students }}</p>
+  </article>
+  <article class="metric">
+    <h3>Most Popular</h3>
+    <p>{{ report.most_popular_course }}</p>
+  </article>
+  <article class="metric">
+    <h3>Avg Enrollment</h3>
+    <p>{{ report.average_enrollment_per_course }}</p>
+  </article>
+</section>
+
+<section class="panel reveal stagger-1">
+  <h2>Quick Actions</h2>
+  <div class="quick-grid">
+    <form method="post" action="{{ url_for('add_course') }}" class="card-form">
+      <h3>Add Course</h3>
+      <input name="course_id" placeholder="Course ID" required>
+      <input name="course_name" placeholder="Course Name" required>
+      <input name="instructor_name" placeholder="Instructor Name" required>
+      <input name="branch" placeholder="Branch" required>
+      <select name="category">
+        <option>Core</option>
+        <option>Elective</option>
+      </select>
+      <input name="max_seats" type="number" min="1" max="5" placeholder="Max Seats (1-5)" required>
+      <input name="credits" type="number" min="1" placeholder="Credits" required>
+      <button class="btn btn-primary" type="submit">Add Course</button>
+    </form>
+
+    <form method="post" action="{{ url_for('add_student') }}" class="card-form form-stack compact-stack">
+      <h3>Register Student</h3>
+      <div class="field-group">
+        <label for="legacy_student_id">Student ID</label>
+        <input id="legacy_student_id" name="student_id" placeholder="Student ID" required>
+      </div>
+      <div class="field-group">
+        <label for="legacy_student_name">Student Name</label>
+        <input id="legacy_student_name" name="student_name" placeholder="Student Name" required>
+      </div>
+      <div class="field-group">
+        <label for="legacy_branch">Branch</label>
+        <input id="legacy_branch" name="branch" placeholder="Branch" required>
+      </div>
+      <div class="field-group">
+        <label for="legacy_semester">Semester</label>
+        <input id="legacy_semester" name="semester" type="number" min="1" max="12" placeholder="Semester" required>
+      </div>
+      <div class="field-group">
+        <label for="legacy_email">Email</label>
+        <input id="legacy_email" name="email" type="email" placeholder="Email" required>
+      </div>
+      <button class="btn btn-primary form-submit" type="submit">Register Student</button>
+    </form>
+
+    <form method="post" action="{{ url_for('enroll') }}" class="card-form">
+      <h3>Enroll Student</h3>
+      <input name="student_id" placeholder="Student ID" required>
+      <input name="course_id" placeholder="Course ID" required>
+      <button class="btn btn-primary" type="submit">Enroll</button>
+      <p class="hint">Smart checks capacity and waiting list automatically.</p>
+    </form>
+  </div>
+</section>
+
+<section class="panel reveal stagger-2">
+  <h2>Search and Filter</h2>
+  <form method="get" action="{{ url_for('dashboard') }}" class="filter-row">
+    <input name="search" placeholder="Search by ID or Name" value="{{ search_query }}">
+    <input name="branch" placeholder="Branch" value="{{ branch }}">
+    <input name="instructor" placeholder="Instructor" value="{{ instructor }}">
+    <select name="category">
+      <option value="">Category (Any)</option>
+      <option value="Core" {% if category == 'Core' %}selected{% endif %}>Core</option>
+      <option value="Elective" {% if category == 'Elective' %}selected{% endif %}>Elective</option>
+    </select>
+    <button class="btn btn-ghost" type="submit">Apply</button>
+    <a class="btn btn-ghost" href="{{ url_for('dashboard') }}">Reset</a>
+  </form>
+</section>
+
+<section class="panel reveal stagger-3">
+  <h2>Course Catalog</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Instructor</th>
+          <th>Branch</th>
+          <th>Category</th>
+          <th>Credits</th>
+          <th>Available Seats</th>
+          <th>Waiting List</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in courses %}
+        <tr>
+          <td>{{ c.course_id }}</td>
+          <td>{{ c.course_name }}</td>
+          <td>{{ c.instructor_name }}</td>
+          <td>{{ c.branch }}</td>
+          <td>{{ c.category }}</td>
+          <td>{{ c.credits }}</td>
+          <td>{{ c.available_seats }}/{{ c.max_seats }}</td>
+          <td>{{ c.waiting_list | length }}</td>
+          <td>
+            <details>
+              <summary>Edit</summary>
+              <form method="post" action="{{ url_for('update_course', course_id=c.course_id) }}" class="inline-edit">
+                <input name="course_name" placeholder="New name">
+                <input name="instructor_name" placeholder="New instructor">
+                <input name="branch" placeholder="New branch">
+                <select name="category">
+                  <option value="">Category</option>
+                  <option>Core</option>
+                  <option>Elective</option>
+                </select>
+                <input name="max_seats" type="number" min="1" max="5" placeholder="Max seats (1-5)">
+                <input name="credits" type="number" min="1" placeholder="Credits">
+                <button class="btn btn-primary" type="submit">Update</button>
+              </form>
+              <form method="post" action="{{ url_for('delete_course', course_id=c.course_id) }}">
+                <button class="btn btn-danger" type="submit">Delete</button>
+              </form>
+            </details>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel reveal stagger-4">
+  <h2>Student Directory</h2>
+  <div class="student-grid">
+    {% for s in students %}
+      <a class="student-card" href="{{ url_for('student_profile', student_id=s.student_id) }}">
+        <h3>{{ s.student_name }}</h3>
+        <p>ID: {{ s.student_id }}</p>
+        <p>Branch: {{ s.branch }}</p>
+        <p>Semester: {{ s.semester }}</p>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel reveal stagger-5">
+  <h2>Report Highlights</h2>
+  <p>Courses with available seats: {{ report.courses_with_available_seats | join(', ') if report.courses_with_available_seats else 'None' }}</p>
+  <p>Courses with waiting list: {{ report.courses_with_waiting_list | join(', ') if report.courses_with_waiting_list else 'None' }}</p>
+</section>
+{% endblock %}

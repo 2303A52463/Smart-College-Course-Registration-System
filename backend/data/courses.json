@@ -1,0 +1,47 @@
+[
+  {
+    "course_id": "CS100",
+    "course_name": "Cloud and DevOps Engineering",
+    "instructor_name": "Dr. Kavya Menon",
+    "max_seats": 3,
+    "credits": 4,
+    "category": "Core",
+    "branch": "CSE",
+    "enrolled_students": [
+      "2303A52061",
+      "2303A52055",
+      "2303A52057"
+    ],
+    "waiting_list": []
+  },
+  {
+    "course_id": "CS103",
+    "course_name": "Undergraduate Research Methods",
+    "instructor_name": "Prof. Tarun Verma",
+    "max_seats": 3,
+    "credits": 2,
+    "category": "Elective",
+    "branch": "CSE",
+    "enrolled_students": [
+      "2303A52062",
+      "2303A51119",
+      "2303A51120"
+    ],
+    "waiting_list": []
+  },
+  {
+    "course_id": "CS104",
+    "course_name": "Organizational Behavior",
+    "instructor_name": "Prof. Tarun Verma",
+    "max_seats": 3,
+    "credits": 1,
+    "category": "Elective",
+    "branch": "CSE",
+    "enrolled_students": [
+      "2303A51121",
+      "2303A51122",
+      "2303A51123"
+    ],
+    "waiting_list": []
+  }
+]

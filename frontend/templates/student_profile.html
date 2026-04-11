@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="panel reveal student-profile">
+  <h2>Student Profile</h2>
+  <div class="profile-grid">
+    <div>
+      <span class="label">Student ID</span>
+      <p>{{ student.student_id }}</p>
+    </div>
+    <div>
+      <span class="label">Name</span>
+      <p>{{ student.student_name }}</p>
+    </div>
+    <div>
+      <span class="label">Branch</span>
+      <p>{{ student.branch }}</p>
+    </div>
+    <div>
+      <span class="label">Semester</span>
+      <p>{{ student.semester }}</p>
+    </div>
+    <div>
+      <span class="label">Email</span>
+      <p>{{ student.email }}</p>
+    </div>
+    <div>
+      <span class="label">Registered Courses</span>
+      <p>{{ student.registered_courses | join(', ') if student.registered_courses else 'None' }}</p>
+    </div>
+  </div>
+  <a href="{{ url_for('dashboard_router') }}" class="btn btn-ghost">Back to Dashboard</a>
+</section>
+{% endblock %}

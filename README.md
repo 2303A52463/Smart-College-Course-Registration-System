@@ -32,6 +32,13 @@ python run.py
 
 Then open `http://127.0.0.1:5000` in your browser.
 
+## Live Deployment
+
+🚀 **Access the live application here:**
+- **URL:** https://smart-college-course-registration-system.onrender.com
+- **Platform:** Render (Free Tier)
+- **Status:** Active
+
 ### Run Terminal App
 
 ```bash
